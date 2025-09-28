@@ -1,6 +1,11 @@
 require("dotenv").config();
 
-const { Client, IntentsBitField, EmbedBuilder } = require("discord.js");
+const {
+  Client,
+  IntentsBitField,
+  EmbedBuilder,
+  ActivityType,
+} = require("discord.js");
 
 const client = new Client({
   intents: [
@@ -10,9 +15,66 @@ const client = new Client({
     IntentsBitField.Flags.MessageContent,
   ],
 });
+let status = [
+  {
+    name: "JS lessons with 3B 🌲",
+    type: ActivityType.Playing,
+  },
+  {
+    name: "React hacks 🚀",
+    type: ActivityType.Playing,
+  },
+  {
+    name: "HTML & CSS battles 🎨",
+    type: ActivityType.Competing,
+  },
+  {
+    name: "debugging student code 🐞",
+    type: ActivityType.Watching,
+  },
 
+  {
+    name: "pair programming sessions",
+    type: ActivityType.Watching,
+  },
+  {
+    name: "you grow into devs 💻✨",
+    type: ActivityType.Watching,
+  },
+  {
+    name: "Hackathon prep 🔥",
+    type: ActivityType.Competing,
+  },
+  {
+    name: "daily commits streaks 📈",
+    type: ActivityType.Watching,
+  },
+  {
+    name: "new pull requests 🚀",
+    type: ActivityType.Watching,
+  },
+  {
+    name: "bootcamp Q&A",
+    type: ActivityType.Listening,
+  },
+  {
+    name: "Pinecone livestream",
+    type: ActivityType.Streaming,
+    url: "https://www.facebook.com/pinecone.academy.mongolia",
+  },
+  {
+    name: "community events",
+    type: ActivityType.Streaming,
+    url: "https://www.facebook.com/pinecone.academy.mongolia",
+  },
+];
 client.on("clientReady", () => {
   console.log(`Logged in as ${client.user.tag}!`);
+
+  setInterval(() => {
+    let random = Math.floor(Math.random() * status.length);
+    client.user.setActivity(status[random]);
+  }, 10000);
 });
 
 client.on("messageCreate", (message) => {
@@ -21,6 +83,64 @@ client.on("messageCreate", (message) => {
   }
   if (message.content === "Hello") {
     message.reply("Hello World");
+  }
+  if (message.content === "embed") {
+    try {
+      const embed = new EmbedBuilder()
+        .setColor("Red")
+        .setTitle("🌲 Welcome to 3B — Pinecone Academy Bootcamp")
+        .setAuthor({
+          name: "3B",
+          iconURL:
+            "https://media.discordapp.net/attachments/1399683254977822768/1421840614382768238/pinecone-logo.jpg?ex=68da7fc2&is=68d92e42&hm=981a64f09f401fcf144ca04d8dd5f010f80901e90e5d24d97c46c466b096bc9c&=&format=webp&width=1554&height=1554",
+          url: "https://discord.js.org",
+        })
+        .setDescription(
+          `Hey 3B coders! 👋\nThis is our home for learning JavaScript, React, HTML & CSS together.\nAsk questions, share progress, help each other grow, and get ready for the hackathon at the end of bootcamp! 🚀`
+        )
+        .setThumbnail(
+          "https://media.discordapp.net/attachments/1399683254977822768/1421859056246849577/525569026_1415411386233570_7444308595557292400_n.png?ex=68da90ef&is=68d93f6f&hm=4b585a8ab9ac2cb484afc4670f3b2aed7da8a8e6b47168dff5b994d8b08d2856&=&format=webp&quality=lossless&width=932&height=700"
+        )
+        .addFields(
+          {
+            name: "🗓️ Schedule",
+            value:
+              "Classes run Monday – Friday. Check announcements for exact times & special events.",
+          },
+          { name: "\u200B", value: "\u200B" },
+          {
+            name: "💻 Tech Stack",
+            value:
+              "- JavaScript (ES6+)\n- React & Next.js\n- HTML5 + CSS3\n- Git & GitHub",
+            inline: true,
+          },
+          { name: "\u200B", value: "\u200B", inline: true },
+          {
+            name: "💬 Class Rules",
+            value:
+              "1) Be respectful & supportive.\n2) Ask questions — no shame in learning!\n3) Share resources & wins.\n4) Keep channels on topic.",
+            inline: true,
+          }
+        )
+        .addFields({
+          name: "👩‍🏫 Teachers' GitHub",
+          value:
+            "[Any Bagsh](https://github.com/andyerdene)\n[Bataa Bagsh](https://github.com/batmunkh0612)",
+          inline: true,
+        })
+        .setImage(
+          "https://media.discordapp.net/attachments/1399683254977822768/1421841271491662007/500708558_1140204068136711_6095202482495404495_n.png?ex=68da805f&is=68d92edf&hm=9e631c0b202d202783443859218758182aca4c58096f2aad30d6a91b2129fb36&=&format=webp&quality=lossless&width=2928&height=1286"
+        )
+        .setTimestamp()
+        .setFooter({
+          text: "Stay curious and keep building 💻✨ — 3B Pinecone Academy",
+          iconURL: "https://i.imgur.com/AfFp7pu.png",
+        });
+      interaction.reply({ embeds: [embed] });
+    } catch (error) {
+      console.error("Embed error:", error);
+      message.reply("There was an error creating the embed.");
+    }
   }
 });
 
@@ -45,21 +165,17 @@ client.on("interactionCreate", (interaction) => {
     const embed = new EmbedBuilder()
       .setColor("Red")
       .setTitle("🌲 Welcome to 3B — Pinecone Academy Bootcamp")
-
       .setAuthor({
         name: "3B",
         iconURL:
           "https://media.discordapp.net/attachments/1399683254977822768/1421840614382768238/pinecone-logo.jpg?ex=68da7fc2&is=68d92e42&hm=981a64f09f401fcf144ca04d8dd5f010f80901e90e5d24d97c46c466b096bc9c&=&format=webp&width=1554&height=1554",
         url: "https://discord.js.org",
       })
-
       .setDescription(
-        `Hey 3B coders! 👋
-This is our home for learning JavaScript, React, HTML & CSS together.
-Ask questions, share progress, help each other grow, and get ready for the hackathon at the end of bootcamp! 🚀`
+        `Hey 3B coders! 👋\nThis is our home for learning JavaScript, React, HTML & CSS together.\nAsk questions, share progress, help each other grow, and get ready for the hackathon at the end of bootcamp! 🚀`
       )
       .setThumbnail(
-        "https://media.discordapp.net/attachments/1399683254977822768/1421841271491662007/500708558_1140204068136711_6095202482495404495_n.png?ex=68da805f&is=68d92edf&hm=9e631c0b202d202783443859218758182aca4c58096f2aad30d6a91b2129fb36&=&format=webp&quality=lossless&width=2928&height=1286"
+        "https://media.discordapp.net/attachments/1399683254977822768/1421859056246849577/525569026_1415411386233570_7444308595557292400_n.png?ex=68da90ef&is=68d93f6f&hm=4b585a8ab9ac2cb484afc4670f3b2aed7da8a8e6b47168dff5b994d8b08d2856&=&format=webp&quality=lossless&width=932&height=700"
       )
       .addFields(
         {
@@ -82,11 +198,10 @@ Ask questions, share progress, help each other grow, and get ready for the hacka
           inline: true,
         }
       )
-
       .addFields({
         name: "👩‍🏫 Teachers' GitHub",
         value:
-          "[Any Bagsh](https://github.com/andyerdene)\n[Teacher B](https://github.com/batmunkh0612)",
+          "[Any Bagsh](https://github.com/andyerdene)\n[Bataa Bagsh](https://github.com/batmunkh0612)",
         inline: true,
       })
       .setImage(
@@ -97,12 +212,12 @@ Ask questions, share progress, help each other grow, and get ready for the hacka
         text: "Stay curious and keep building 💻✨ — 3B Pinecone Academy",
         iconURL: "https://i.imgur.com/AfFp7pu.png",
       });
-    message.channel.send({ embeds: [embed] });
+    interaction.reply({ embeds: [embed] });
   }
 });
+
 client.on("interactionCreate", async (interaction) => {
   try {
-    // Only run for button interactions
     if (!interaction.isButton()) return;
 
     const role = interaction.guild.roles.cache.get(interaction.customId);
@@ -113,7 +228,6 @@ client.on("interactionCreate", async (interaction) => {
       });
     }
 
-    // Defer reply first (ephemeral)
     await interaction.deferReply({ ephemeral: true });
 
     const hasRole = interaction.member.roles.cache.has(role.id);
