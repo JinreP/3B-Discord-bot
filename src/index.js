@@ -70,7 +70,9 @@ let status = [
 ];
 client.on("clientReady", () => {
   console.log(`Logged in as ${client.user.tag}!`);
-
+  client.user.setPresence({
+    status: "dnd",
+  });
   setInterval(() => {
     let random = Math.floor(Math.random() * status.length);
     client.user.setActivity(status[random]);
