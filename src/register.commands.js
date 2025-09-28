@@ -10,7 +10,10 @@ const commands = [
     name: "ping",
     description: "Replies with pong",
   },
-
+  {
+    name: "embed",
+    description: "sends a embed message",
+  },
   {
     name: "add",
     description: "Adds two number",
